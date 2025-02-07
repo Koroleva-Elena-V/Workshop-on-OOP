@@ -7,7 +7,7 @@
     {
         public override bool Stackable => false; //не складывается
 
-        public Grindstone(string name) : base(name) //передает заданное название
+        public Grindstone(string name) : base(name) 
         {
         }
 

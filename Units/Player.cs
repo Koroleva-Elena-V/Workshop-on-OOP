@@ -69,14 +69,57 @@ namespace GamePrototype.Units
         //Снижение урона: учитывает броню
         protected override uint CalculateAppliedDamage(uint damage)
         {
-            if (_equipment.TryGetValue(EquipSlot.Armour, out var item) && item is Armour armour) 
+            if (_equipment.TryGetValue(EquipSlot.Armour, out var item) && item is Armour armour)
             {
-                damage -= (uint)(damage * (armour.Defence / 100f));
+                // !!! Добавлено по заданию 1
+                // Проверяем, есть ли прочность у брони
+                if (armour.Durability > 0)
+                {
+                    damage -= (uint)(damage * (armour.Defence / 100f));
+
+                    // Уменьшаем прочность брони
+                    armour.Durability--;
+
+                    // Если прочность брони закончилась, снимаем ее
+                    if (armour.Durability <= 0)
+                    {
+                        _equipment.Remove(EquipSlot.Armour);
+                    }
+                }
+                else
+                {
+                    // Если прочности нет, то броня не защищает
+                    _equipment.Remove(EquipSlot.Armour);
+                }
             }
+
             return damage;
         }
 
+        //Метод для использования точильного камня
+        public bool UseGrindstone(Weapon weapon, Grindstone grindstone)
+        {
+            if (weapon == null || grindstone == null)
+            {
+                Console.WriteLine("No weapon or whetstone specified"); //Не указано оружие или точильный камень
+                return false;
+            }
 
+            //Проверка на наличие точильного камня в инвентаре
+            if (!Inventory.Items.Contains(grindstone))
+            {
+                Console.WriteLine("There is no whetstone in inventory"); //В инвентаре нет точильного камня
+                return false;
+            }
+
+            //Увеличение урона оружия (прочности)
+            weapon.Damage += 4;
+
+            //Удаление точильного камня из инвентаря
+            Inventory.TryRemove(grindstone);
+            Console.WriteLine($"Grindstone {grindstone.Name} used on weapon {weapon.Name}, damage increased by 4!");
+            return true;
+        }
 
         //Предоставляет текстовую информацию по состоянию игрока
         public override string ToString()
