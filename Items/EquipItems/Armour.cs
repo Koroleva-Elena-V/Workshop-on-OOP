@@ -13,8 +13,6 @@ namespace GamePrototype.Items.EquipItems
             Durability = (int)durability; 
         }
 
-       
-
         public uint Defence
         {
             get => _defence;

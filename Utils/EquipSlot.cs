@@ -4,6 +4,8 @@
     public enum EquipSlot
     {
         Weapon,
-        Armour
+        Armour,
+        RangeWeapon,    //добавила по заданию 2 - Оружие дальнего действия
+        Helmet       //добавила по заданию 2 - шлем
     }
 }

@@ -15,7 +15,12 @@ namespace GamePrototype.Items.EquipItems
 
         public uint Damage { get; set;  } // свойство про урон, наносимый оружием (добавила от себя Set чтобы можно было добавить + урон от точильного камня)
 
-        public override EquipSlot Slot => EquipSlot.Weapon; 
+        public override EquipSlot Slot => EquipSlot.Weapon;
         //Указывает, что это оружие занимает слот созданный в вкладке EquipSlot.Weapon.
+
+        public void IncreaseDamage(uint amount) //Увеличение урона
+        {
+            Damage += amount;
+        }
     }
 }

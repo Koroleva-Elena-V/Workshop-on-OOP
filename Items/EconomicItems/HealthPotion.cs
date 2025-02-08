@@ -3,9 +3,11 @@
     //зелье здоровья
     public sealed class HealthPotion : EconomicItem //наследуется от EconomicItem.
     {
-        public uint HealthRestore => 7; 
+
+        public uint HealthRestore { get; set; }
+        //public uint HealthRestore => 7; 
         //свойство указывающее количество здоровья, которое восстанавливает это зелье.
-         //  => 7;: Указывает, что свойство всегда возвращает значение 7. Полная запись: get { return 7; }.
+        //  => 7;: Указывает, что свойство всегда возвращает значение 7. Полная запись: get { return 7; }.
 
 
 

@@ -7,10 +7,11 @@ namespace GamePrototype.Units
 {
     public sealed class Player : Unit
     {
-        private readonly Dictionary<EquipSlot, EquipItem> _equipment = new();  
+        private readonly Dictionary<EquipSlot, EquipItem> _equipment = new();
         //Словарь _equipment, использующий EquipSlot в качестве ключа,
         //- это надежный подход к управлению экипированными предметами
 
+        private const float ArmourPercentageDivisor = 100f; 
 
         public Player(string name, uint health, uint maxHealth, uint baseDamage) : 
             base(name, health, maxHealth, baseDamage)
@@ -21,9 +22,15 @@ namespace GamePrototype.Units
         // расчет урона
         public override uint GetUnitDamage()
         {
-            if (_equipment.TryGetValue(EquipSlot.Weapon, out var item) && item is Weapon weapon) 
+            EquipItem? item = null;
+            if (_equipment.TryGetValue(EquipSlot.Weapon, out item) && item is Weapon weapon)
             {
                 return BaseDamage + weapon.Damage;
+            }
+
+            if (_equipment.TryGetValue(EquipSlot.RangeWeapon, out item) && item is RangeWeapon rangeWeapon)
+            {
+                return BaseDamage + rangeWeapon.Damage;
             }
             return BaseDamage;
         }
@@ -33,13 +40,13 @@ namespace GamePrototype.Units
         //Обработка завершения боя, обрабатывает экономические предметы (например, зелья здоровья) в конце боя
         public override void HandleCombatComplete()
         {
-            var items = Inventory.Items;
-            for (int i = 0; i < items.Count; i++) 
+            var items = Inventory.Items.ToList(); // Создаем копию списка
+            foreach (var item in items)
             {
-                if (items[i] is EconomicItem economicItem) 
+                if (item is EconomicItem economicItem)
                 {
                     UseEconomicItem(economicItem);
-                    Inventory.TryRemove(items[i]);
+                    Inventory.TryRemove(item);
                 }
             }
         }
@@ -48,9 +55,16 @@ namespace GamePrototype.Units
         //Управление инвентарем: обрабатывает непосредственное экипирование предметов.
         public override void AddItemToInventory(Item item)
         {
-            if (item is EquipItem equipItem && _equipment.TryAdd(equipItem.Slot, equipItem)) 
+            //if (item is EquipItem equipItem && _equipment.TryAdd(equipItem.Slot, equipItem)) 
+            //{
+            //    // Item was equipped
+            //    return;
+            //}
+            //base.AddItemToInventory(item);
+
+            if (item is EquipItem equipItem)
             {
-                // Item was equipped
+                EquipItem(equipItem); // Use the explicit equip method.
                 return;
             }
             base.AddItemToInventory(item);
@@ -59,23 +73,48 @@ namespace GamePrototype.Units
         // использование предмета из инвентаря для восстановления здоровья
         private void UseEconomicItem(EconomicItem economicItem)
         {
-            if (economicItem is HealthPotion healthPotion) 
+            if (economicItem is HealthPotion healthPotion)
             {
-                Health += healthPotion.HealthRestore;
+                Health = Math.Min(Health + healthPotion.HealthRestore, MaxHealth);
+            }
+        }
+        public bool EquipItem(EquipItem item)
+        {
+            if (_equipment.ContainsKey(item.Slot))
+            {
+                // Слот занят.  Обрабатывать соответственно (замена, удаление, ошибка)
+                UnequipItem(item.Slot); // Пример: обмен предметами
+            }
+
+            if (_equipment.TryAdd(item.Slot, item))
+            {
+                Inventory.TryRemove(item); // Удалить из инвентаря, если экипировано.
+                // Вызовите событие, если у вас есть система событий: OnItemEquipped?.Invoke(item);
+                Console.WriteLine($"Экипировано: {item.Name} в слот {item.Slot}"); // Уведомление о замене
+                return true;
+            }
+            return false; // Экипировать не удалось.
+        }
+
+        public void UnequipItem(EquipSlot slot)
+        {
+            if (_equipment.TryGetValue(slot, out var item))
+            {
+                _equipment.Remove(slot);
+                Inventory.TryAdd(item); //Добавить в инвентарь, если он не экипирован.
+                // Вызовите событие: OnItemUnequiped?.Invoke(item);
+                Console.WriteLine($"Снято: {item.Name} из слота {slot}"); // Уведомление о снятии
             }
         }
 
-
-        //Снижение урона: учитывает броню
+        
         protected override uint CalculateAppliedDamage(uint damage)
         {
             if (_equipment.TryGetValue(EquipSlot.Armour, out var item) && item is Armour armour)
             {
-                // !!! Добавлено по заданию 1
-                // Проверяем, есть ли прочность у брони
                 if (armour.Durability > 0)
                 {
-                    damage -= (uint)(damage * (armour.Defence / 100f));
+                    damage -= (uint)(damage * (armour.Defence / ArmourPercentageDivisor));
 
                     // Уменьшаем прочность брони
                     armour.Durability--;
@@ -88,11 +127,25 @@ namespace GamePrototype.Units
                 }
                 else
                 {
-                    // Если прочности нет, то броня не защищает
                     _equipment.Remove(EquipSlot.Armour);
                 }
             }
-
+            if (_equipment.TryGetValue(EquipSlot.Helmet, out item) && item is Helmet helmet)
+            {
+                if (helmet.Durability > 0)
+                {
+                    damage -= (uint)(damage * (helmet.Defence / ArmourPercentageDivisor));
+                    helmet.Durability--;
+                    if (helmet.Durability <= 0)
+                    {
+                        _equipment.Remove(EquipSlot.Helmet);
+                    }
+                }
+                else
+                {
+                    _equipment.Remove(EquipSlot.Helmet);
+                }
+            }
             return damage;
         }
 
