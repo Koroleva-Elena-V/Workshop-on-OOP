@@ -1,5 +1,7 @@
 ﻿using GamePrototype.Units;
 
+// бои
+
 namespace GamePrototype.Combat
 {
     public sealed class CombatManager

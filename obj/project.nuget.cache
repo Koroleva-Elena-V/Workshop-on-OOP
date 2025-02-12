@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j6YyvgS4HvNvUMb5tor0rp6hmVBQ/BOdgVW0k7EWKcRgjxH1CTxFLs4f5arMQQGTcLAB5WQxUKpMm9hZ7l5Nmw==",
+  "dgSpecHash": "tMjZwhYKKw7CKR/YcA6q53MYAXh8/wCfKPLdCylfxh4qpZ3Ynt02KOqINZs42jP64sSC0ZJm2zzYMG5tWZw3CA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\msi summit\\Desktop\\GamePrototype\\GamePrototype.csproj",
+  "projectFilePath": "C:\\Users\\msi summit\\Desktop\\GamePrototype1\\GamePrototype.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\msi summit\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.22\\microsoft.windowsdesktop.app.ref.6.0.22.nupkg.sha512",
     "C:\\Users\\msi summit\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.22\\microsoft.netcore.app.ref.6.0.22.nupkg.sha512",

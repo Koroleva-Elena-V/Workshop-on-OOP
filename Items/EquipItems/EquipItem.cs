@@ -10,9 +10,10 @@ namespace GamePrototype.Items.EquipItems
     public abstract class EquipItem : Item 
     {
         private uint _durability; // представляет текущую прочность предмета
-        private uint _maxDurability; //представляет максимальную прочность предмета
-        
-        
+        private readonly uint _maxDurability; //представляет максимальную прочность предмета,
+                                              //добавила readonly, что неизменяемо
+
+
         public uint Durability 
         { 
             get => _durability; //Получение значения свойства перенаправляется к _durability. 

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\msi summit\\Desktop\\GamePrototype\\GamePrototype.csproj",
+      "projectUniqueName": "C:\\Users\\msi summit\\Desktop\\GamePrototype1\\GamePrototype.csproj",
       "projectName": "GamePrototype",
-      "projectPath": "C:\\Users\\msi summit\\Desktop\\GamePrototype\\GamePrototype.csproj",
+      "projectPath": "C:\\Users\\msi summit\\Desktop\\GamePrototype1\\GamePrototype.csproj",
       "packagesPath": "C:\\Users\\msi summit\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\msi summit\\Desktop\\GamePrototype\\obj\\",
+      "outputPath": "C:\\Users\\msi summit\\Desktop\\GamePrototype1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\msi summit\\AppData\\Roaming\\NuGet\\NuGet.Config",

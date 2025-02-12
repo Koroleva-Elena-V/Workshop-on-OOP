@@ -1,17 +1,15 @@
 ﻿using GamePrototype.Dungeon;
 using GamePrototype.Items.EconomicItems;
 
-//доп.класс, предоставляет методы для создания подземелий.
-
 namespace GamePrototype.Utils
 {
-    public static class DungeonBuilder 
+    public static class DungeonBuilderBase
     {
-        public static DungeonRoom BuildDungeon(Difficulty difficulty)  //строит новое подземелье
+        public static DungeonRoom BuildDungeon(Difficulty)  //строит новое подземелье
         {
             // создаются комнаты, в нужные добавляется монстр и золото
             var enter = new DungeonRoom("Enter");
-            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy(difficulty));
+            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy());
             var emptyRoom = new DungeonRoom("Empty");
             var lootRoom = new DungeonRoom("Loot1", new Gold());
             var lootStoneRoom = new DungeonRoom("Loot1", new Grindstone("Stone"));

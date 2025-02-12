@@ -13,9 +13,10 @@
 
         public override bool Stackable => false; // Указывает, что зелья здоровья нельзя складывать
 
-        public HealthPotion(string name) //Конструктор, который принимает параметр name типа string.
+        public HealthPotion(string name, uint healthRestore) //Конструктор, который принимает параметр name типа string.
             : base(name) //Вызывает конструктор базового класса EconomicItem и передает ему имя зелья.
         {
+            HealthRestore = healthRestore;
         }
 
         

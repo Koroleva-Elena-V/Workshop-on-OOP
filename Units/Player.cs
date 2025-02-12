@@ -22,7 +22,7 @@ namespace GamePrototype.Units
         // расчет урона
         public override uint GetUnitDamage()
         {
-            EquipItem? item = null;
+            EquipItem? item = null; // переменная-ссылка на объект класса нулевая
             if (_equipment.TryGetValue(EquipSlot.Weapon, out item) && item is Weapon weapon)
             {
                 return BaseDamage + weapon.Damage;
@@ -64,7 +64,7 @@ namespace GamePrototype.Units
 
             if (item is EquipItem equipItem)
             {
-                EquipItem(equipItem); // Use the explicit equip method.
+                EquipItem(equipItem); 
                 return;
             }
             base.AddItemToInventory(item);
@@ -89,7 +89,7 @@ namespace GamePrototype.Units
             if (_equipment.TryAdd(item.Slot, item))
             {
                 Inventory.TryRemove(item); // Удалить из инвентаря, если экипировано.
-                // Вызовите событие, если у вас есть система событий: OnItemEquipped?.Invoke(item);
+                
                 Console.WriteLine($"Экипировано: {item.Name} в слот {item.Slot}"); // Уведомление о замене
                 return true;
             }
@@ -102,7 +102,7 @@ namespace GamePrototype.Units
             {
                 _equipment.Remove(slot);
                 Inventory.TryAdd(item); //Добавить в инвентарь, если он не экипирован.
-                // Вызовите событие: OnItemUnequiped?.Invoke(item);
+                
                 Console.WriteLine($"Снято: {item.Name} из слота {slot}"); // Уведомление о снятии
             }
         }
@@ -117,12 +117,13 @@ namespace GamePrototype.Units
                     damage -= (uint)(damage * (armour.Defence / ArmourPercentageDivisor));
 
                     // Уменьшаем прочность брони
-                    armour.Durability--;
+                    armour.ReduceDurability(1);
 
                     // Если прочность брони закончилась, снимаем ее
                     if (armour.Durability <= 0)
                     {
                         _equipment.Remove(EquipSlot.Armour);
+                        Console.WriteLine("Броня не активна"); // !!!!!!!!!!!!!! НЕ ЗАБЫТЬ НА АНГЛИЙСКИЙ ПЕРЕВЕСТИ
                     }
                 }
                 else
@@ -139,6 +140,7 @@ namespace GamePrototype.Units
                     if (helmet.Durability <= 0)
                     {
                         _equipment.Remove(EquipSlot.Helmet);
+                        Console.WriteLine("Шлем не активен"); // !!!!!!!!!!!!!! НЕ ЗАБЫТЬ НА АНГЛИЙСКИЙ ПЕРЕВЕСТИ
                     }
                 }
                 else
@@ -152,12 +154,6 @@ namespace GamePrototype.Units
         //Метод для использования точильного камня
         public bool UseGrindstone(Weapon weapon, Grindstone grindstone)
         {
-            if (weapon == null || grindstone == null)
-            {
-                Console.WriteLine("No weapon or whetstone specified"); //Не указано оружие или точильный камень
-                return false;
-            }
-
             //Проверка на наличие точильного камня в инвентаре
             if (!Inventory.Items.Contains(grindstone))
             {
@@ -182,9 +178,15 @@ namespace GamePrototype.Units
             builder.AppendLine($"Health {Health}/{MaxHealth}");
             builder.AppendLine("Loot:");
             var items = Inventory.Items;
-            for (int i = 0; i < items.Count; i++) 
+            for (int i = 0; i < items.Count; i++)
             {
                 builder.AppendLine($"[{items[i].Name}] : {items[i].Amount}");
+            }
+            builder.AppendLine("Equipment:");
+           
+            foreach (var item in _equipment)
+            {
+                builder.AppendLine($"- {item.Value.Name} ({item.Key}) Durability: {item.Value.Durability}"); //опред.прочность
             }
             return builder.ToString();
         }

@@ -3,8 +3,8 @@ using GamePrototype.Units;
 
 namespace GamePrototype.Dungeon
 {
-    public sealed class DungeonRoom //sealed: От этого класса нельзя унаследовать другие классы
-    {      
+    public class DungeonRoom //sealed удалила, иначе от этого класса нельзя унаследовать другие классы
+    {
         public readonly string Name; //имя комнаты подземелья
         public readonly Unit Enemy; //юнит (враг)
         public readonly Item Loot; //класс для игровых предметов
@@ -13,29 +13,26 @@ namespace GamePrototype.Dungeon
 
 
         // ниже 3 конструктора:
-        public DungeonRoom(string name) => Name = name; 
-           // 1.Пустой конструктор, который принимает только имя комнаты
+        public DungeonRoom(string name) => Name = name;
+        // 1.Пустой конструктор, который принимает только имя комнаты
 
-        public DungeonRoom(string name, Unit enemy) 
-            //2. Конструктор, который принимает имя комнаты (name) и врага (enemy).
-            //Поле Loot будет иметь значение null по умолчанию.
+        public DungeonRoom(string name, Unit enemy)
+        //2. Конструктор, который принимает имя комнаты (name) и врага (enemy).
+        //Поле Loot будет иметь значение null по умолчанию.
         {
             Name = name;
             Enemy = enemy;
         }
 
-        public DungeonRoom(string name, Item item) 
-            //3. Конструктор, который принимает имя комнаты (name) и предмет добычи (item).
-            //Поле Enemy будет иметь значение null по умолчанию.
+        public DungeonRoom(string name, Item item)
+        //3. Конструктор, который принимает имя комнаты (name) и предмет добычи (item).
+        //Поле Enemy будет иметь значение null по умолчанию.
         {
             Name = name;
             Loot = item;
         }
 
-
-
-
-        public bool TrySetDirection(Direction direction, DungeonRoom room) 
+        public bool TrySetDirection(Direction direction, DungeonRoom room)
         {
             if (Rooms.ContainsKey(direction))
             {

@@ -15,7 +15,7 @@ namespace GamePrototype.Game
         public void StartGame() 
         {
             Initialize(); 
-            Console.WriteLine("Entering the dungeon");// метод для знакомства с игроком
+            Console.WriteLine("Entering the dungeon");
             StartGameLoop();
         }
 
@@ -23,11 +23,23 @@ namespace GamePrototype.Game
 
         private void Initialize()
         {
-            Console.WriteLine("Welcome, player!");
-            _dungeon = DungeonBuilder.BuildDungeon();
-            Console.WriteLine("Enter your name");
-            _player = UnitFactoryDemo.CreatePlayer(Console.ReadLine());
-            Console.WriteLine($"Hello {_player.Name}");
+            Console.WriteLine("Welcome, player! Choose difficulty (easy/hard):");
+            if (Enum.TryParse<Difficulty>(Console.ReadLine(), true, out var difficulty))
+            {
+                Console.WriteLine($"Difficulty set to: {difficulty}");
+                _dungeon = DungeonBuilder.BuildDungeon(difficulty);
+                Console.WriteLine("Enter your name");
+                _player = UnitFactoryDemo.CreatePlayer(Console.ReadLine(), difficulty);
+                Console.WriteLine($"Hello {_player.Name}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid difficulty. Defaulting to easy.");
+                _dungeon = DungeonBuilder.BuildDungeon(Difficulty.Easy);
+                Console.WriteLine("Enter your name");
+                _player = UnitFactoryDemo.CreatePlayer(Console.ReadLine(), Difficulty.Easy);
+                Console.WriteLine($"Hello {_player.Name}");
+            }
         }
 
         private void StartGameLoop()
