@@ -6,17 +6,13 @@ namespace GamePrototype.Combat
 {
     public sealed class CombatManager
     {
-        private readonly Random _random = new(); //задаем поле рандома
-        
+        private readonly Random _random = new();         
         public Unit StartCombat(Unit player, Unit enemy) => PlayCombatRoutine(player, enemy); 
-        //создаем поле запуска создания персонажей
-
-
-        // как происходит бой
+               
         private Unit PlayCombatRoutine(Unit player, Unit enemy)
         {
-            Console.WriteLine(GetCombatString()); //получаем инфо о текущем состоянии боя, подробно расписано ниже - GetCombatString
-            while (player.Health > 0 && enemy.Health > 0) // запускается проверка состояния здоровья с условиями
+            Console.WriteLine(GetCombatString()); 
+            while (player.Health > 0 && enemy.Health > 0) 
             {
                 if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors)) 
                 {
@@ -39,18 +35,15 @@ namespace GamePrototype.Combat
             return null;
         }
 
-
-        // выводит подробное описание того, что должен сделать игрок
         private string GetCombatString() => $"Type {RockPaperScissors.Rock} = {(int)RockPaperScissors.Rock}" +
             $"or {RockPaperScissors.Paper} = {(int)RockPaperScissors.Paper}" +
             $"or {RockPaperScissors.Scissors} = {(int)RockPaperScissors.Scissors}";
 
 
-
-        // ооочень подробно каждое действие боя
+        
         private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors)
         {
-            var enemyInput = (RockPaperScissors) _random.Next(1, 3); //ввод игрока = рандом НПС
+            var enemyInput = (RockPaperScissors) _random.Next(1, 3); 
             Console.WriteLine($"Result player = {rockPaperScissors} and enemy = {enemyInput}");
             switch (rockPaperScissors) 
             {
@@ -81,14 +74,13 @@ namespace GamePrototype.Combat
         }
 
 
-        //метод вызывающий атакующего и защищающегося
         private void ApplyDamage(Unit attacker, Unit defender)
         {
-            defender.ApplyDamage(attacker.GetUnitDamage()); // защищающийся получает урон от нападающего
+            defender.ApplyDamage(attacker.GetUnitDamage()); 
             Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
             if (defender.Health == 0) 
             {
-                Console.WriteLine($"{defender.Name} is dead!"); // если здоровье =0, то вывод смс о смерти
+                Console.WriteLine($"{defender.Name} is dead!"); 
             }
         }
     }

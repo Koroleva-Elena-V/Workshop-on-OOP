@@ -11,4 +11,3 @@ namespace GamePrototype
     }
 }
 
-// запускает саму игру

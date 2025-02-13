@@ -8,21 +8,17 @@ namespace GamePrototype.Units
     public sealed class Player : Unit
     {
         private readonly Dictionary<EquipSlot, EquipItem> _equipment = new();
-        //Словарь _equipment, использующий EquipSlot в качестве ключа,
-        //- это надежный подход к управлению экипированными предметами
-
+       
         private const float ArmourPercentageDivisor = 100f; 
 
         public Player(string name, uint health, uint maxHealth, uint baseDamage) : 
             base(name, health, maxHealth, baseDamage)
         {            
         }
-
-
-        // расчет урона
+               
         public override uint GetUnitDamage()
         {
-            EquipItem? item = null; // переменная-ссылка на объект класса нулевая
+            EquipItem? item = null;
             if (_equipment.TryGetValue(EquipSlot.Weapon, out item) && item is Weapon weapon)
             {
                 return BaseDamage + weapon.Damage;
@@ -35,12 +31,10 @@ namespace GamePrototype.Units
             return BaseDamage;
         }
 
-
-
-        //Обработка завершения боя, обрабатывает экономические предметы (например, зелья здоровья) в конце боя
+               
         public override void HandleCombatComplete()
         {
-            var items = Inventory.Items.ToList(); // Создаем копию списка
+            var items = Inventory.Items.ToList(); 
             foreach (var item in items)
             {
                 if (item is EconomicItem economicItem)
@@ -51,8 +45,6 @@ namespace GamePrototype.Units
             }
         }
 
-
-        //Управление инвентарем: обрабатывает непосредственное экипирование предметов.
         public override void AddItemToInventory(Item item)
         {
             //if (item is EquipItem equipItem && _equipment.TryAdd(equipItem.Slot, equipItem)) 
@@ -70,7 +62,7 @@ namespace GamePrototype.Units
             base.AddItemToInventory(item);
         }
 
-        // использование предмета из инвентаря для восстановления здоровья
+        
         private void UseEconomicItem(EconomicItem economicItem)
         {
             if (economicItem is HealthPotion healthPotion)
@@ -82,18 +74,18 @@ namespace GamePrototype.Units
         {
             if (_equipment.ContainsKey(item.Slot))
             {
-                // Слот занят.  Обрабатывать соответственно (замена, удаление, ошибка)
-                UnequipItem(item.Slot); // Пример: обмен предметами
+                
+                UnequipItem(item.Slot); 
             }
 
             if (_equipment.TryAdd(item.Slot, item))
             {
-                Inventory.TryRemove(item); // Удалить из инвентаря, если экипировано.
+                Inventory.TryRemove(item); 
                 
-                Console.WriteLine($"Экипировано: {item.Name} в слот {item.Slot}"); // Уведомление о замене
+                Console.WriteLine($"Экипировано: {item.Name} в слот {item.Slot}"); 
                 return true;
             }
-            return false; // Экипировать не удалось.
+            return false; 
         }
 
         public void UnequipItem(EquipSlot slot)
@@ -101,9 +93,9 @@ namespace GamePrototype.Units
             if (_equipment.TryGetValue(slot, out var item))
             {
                 _equipment.Remove(slot);
-                Inventory.TryAdd(item); //Добавить в инвентарь, если он не экипирован.
+                Inventory.TryAdd(item); 
                 
-                Console.WriteLine($"Снято: {item.Name} из слота {slot}"); // Уведомление о снятии
+                Console.WriteLine($"Снято: {item.Name} из слота {slot}"); 
             }
         }
 
@@ -115,15 +107,13 @@ namespace GamePrototype.Units
                 if (armour.Durability > 0)
                 {
                     damage -= (uint)(damage * (armour.Defence / ArmourPercentageDivisor));
-
-                    // Уменьшаем прочность брони
+                                        
                     armour.ReduceDurability(1);
-
-                    // Если прочность брони закончилась, снимаем ее
+                                        
                     if (armour.Durability <= 0)
                     {
                         _equipment.Remove(EquipSlot.Armour);
-                        Console.WriteLine("Броня не активна"); // !!!!!!!!!!!!!! НЕ ЗАБЫТЬ НА АНГЛИЙСКИЙ ПЕРЕВЕСТИ
+                        Console.WriteLine("Armor is not active"); 
                     }
                 }
                 else
@@ -140,7 +130,7 @@ namespace GamePrototype.Units
                     if (helmet.Durability <= 0)
                     {
                         _equipment.Remove(EquipSlot.Helmet);
-                        Console.WriteLine("Шлем не активен"); // !!!!!!!!!!!!!! НЕ ЗАБЫТЬ НА АНГЛИЙСКИЙ ПЕРЕВЕСТИ
+                        Console.WriteLine("The helmet is not active"); 
                     }
                 }
                 else
@@ -151,26 +141,24 @@ namespace GamePrototype.Units
             return damage;
         }
 
-        //Метод для использования точильного камня
+        
         public bool UseGrindstone(Weapon weapon, Grindstone grindstone)
         {
-            //Проверка на наличие точильного камня в инвентаре
+            
             if (!Inventory.Items.Contains(grindstone))
             {
-                Console.WriteLine("There is no whetstone in inventory"); //В инвентаре нет точильного камня
+                Console.WriteLine("There is no whetstone in inventory"); 
                 return false;
             }
-
-            //Увеличение урона оружия (прочности)
+                       
             weapon.Damage += 4;
-
-            //Удаление точильного камня из инвентаря
+            
             Inventory.TryRemove(grindstone);
             Console.WriteLine($"Grindstone {grindstone.Name} used on weapon {weapon.Name}, damage increased by 4!");
             return true;
         }
 
-        //Предоставляет текстовую информацию по состоянию игрока
+        
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -186,7 +174,7 @@ namespace GamePrototype.Units
            
             foreach (var item in _equipment)
             {
-                builder.AppendLine($"- {item.Value.Name} ({item.Key}) Durability: {item.Value.Durability}"); //опред.прочность
+                builder.AppendLine($"- {item.Value.Name} ({item.Key}) Durability: {item.Value.Durability}"); 
             }
             return builder.ToString();
         }

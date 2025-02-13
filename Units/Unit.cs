@@ -1,42 +1,39 @@
 ﻿using GamePrototype.Items.EconomicItems;
 
-//базовый класс
 
 namespace GamePrototype.Units
 {
     public abstract class Unit
     {
-        private const int INVENTORY_SIZE = 3; //размер инвентаря 
-        private uint _health; //текущее здоровье
-        private uint _maxHealth; //максимальное здоровье
-        protected uint BaseDamage; //базовый урон
-        protected Inventory Inventory; // сам инвентарь
+        private const int INVENTORY_SIZE = 3; 
+        private uint _health; 
+        private uint _maxHealth; 
+        protected uint BaseDamage; 
+        protected Inventory Inventory; 
         
-        public string Name { get; private set; } //установка имени игрока
+        public string Name { get; private set; } 
 
 
         public uint Health
         {
-            get => _health; // свойство для получения текущего здоровья
+            get => _health; 
             protected set => _health = value; 
         }
 
-        public uint MaxHealth => _maxHealth;// Публ. свойство только для чтения, возвращающее макс. здоровье.
+        public uint MaxHealth => _maxHealth;
 
 
 
-        protected Unit(string name, uint health, uint maxHealth, uint baseDamage)
-            //Конструктор класса, принимающий имя, здоровье, максимальное здоровье и базовый урон.
+        protected Unit(string name, uint health, uint maxHealth, uint baseDamage)            
         {
             Name = name;
             _health = health;
             _maxHealth = maxHealth;
             BaseDamage = baseDamage;
-            Inventory = new Inventory(INVENTORY_SIZE);
-            //просто инициализирует поля и создает новый инвентарь
+            Inventory = new Inventory(INVENTORY_SIZE);            
         }
 
-        public void ApplyDamage(uint damage) //Метод для нанесения урона юниту
+        public void ApplyDamage(uint damage) 
         {
             var damageApplied = CalculateAppliedDamage(damage);
             if (_health < damageApplied || (_health - damageApplied) <= 0)
@@ -49,47 +46,25 @@ namespace GamePrototype.Units
             }
 
             DamageReceiveHandler();
-
-            //Рассчитывает примененный урон с помощью абстрактного метода CalculateAppliedDamage.
-            //  Уменьшает здоровье юнита, но не ниже нуля.
-            //  Вызывает виртуальный метод DamageReceiveHandler для обработки получения урона
+                        
         }
-
-
-        //Абстрактный метод для расчета фактически примененного урона (с учетом брони).
-        //Реализован в наследных классах.
+                
         protected abstract uint CalculateAppliedDamage(uint damage);
-
-
-
-        //Виртуальный метод для обработки того, что будет делать юнит после получения урона
-        //Д.б. переопределен в наследных классах.
+                
         protected virtual void DamageReceiveHandler() { }
-
-
-        // метод для получения урона, наносимого врагом.
+        
         public abstract uint GetUnitDamage();
-
-
-        // метод для обработки завершения боя, что юнит должен делать дальше.
+        
         public abstract void HandleCombatComplete();
-
-
-        //Метод для добавления предмета в инвентарь.
-        //Д.б. переопределен в наследных классах.
+        
         public virtual void AddItemToInventory(Item item) 
         {
             if (!Inventory.TryAdd(item)) 
             {
-                Console.WriteLine($"Inventory of {Name} is full"); //Выводит сообщение в консоль, если инвентарь полон.
+                Console.WriteLine($"Inventory of {Name} is full"); 
             }
         }
 
-
-
-        //Метод для добавления всех предметов из другого инвентаря в инвентарь текущего игрока.
-        // Проходит по всем предметам в другом инвентаре и пытается добавить их в инвентарь игрока.
-        //   Прекращает добавление, если инвентарь становится полным.
         public void AddItemsFromUnitToInventory(Unit unit)
         {
             for (int i = 0; i < unit.Inventory.Items.Count; i++) 

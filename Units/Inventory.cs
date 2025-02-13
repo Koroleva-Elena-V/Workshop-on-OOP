@@ -5,43 +5,32 @@ namespace GamePrototype.Units
     public sealed class Inventory
     {
         private readonly uint _capacity; 
-        //_capacity = емкость = максимальное количество предметов, которые может вместить инвентарь
-        
-        
+               
         private readonly List<Item> _items = new List<Item>();
-        //создаем новый пустой список, который хранит фактические предметы в инвентаре при создании экземпляра класса
-
+        
         public IReadOnlyList<Item> Items => _items;
-        //Это объявление свойства Items.
+        
+        public Inventory(uint capacity) 
+            => _capacity = capacity; 
 
-
-        public Inventory(uint capacity) //конструктор, который принимает количество элементов, которые может вместить инвентарь.
-            => _capacity = capacity; //присваивает значение при создании нового объекта
-
-
-        //метод для добавления предмета в инвентарь
         public bool TryAdd(Item item) 
         {
-            if (_items.Count == _capacity) //Проверяет, заполнен ли инвентарь
-                //_items.Count возвращает текущее количество предметов в инвентаре.
-                //_capacity - это максимальная вместимость инвентаря.
+            if (_items.Count == _capacity) 
             {
-                return false; //инвентарь заполнен
+                return false; 
             }
             
-            _items.Add(item); //предмет item добавляется в список _items
+            _items.Add(item); 
             return true;
         }
 
-
-        //метод, который удаляет предмет из инвентаря
-        public bool TryRemove(Item item) // принимает предмет, который нужно удалить из инвентаря
+        public bool TryRemove(Item item) 
         {
-            if ( _items.Count == 0 || !_items.Contains(item)) //Проверяет, пуст ли инвентарь или не содержит ли он указанный предмет.
+            if ( _items.Count == 0 || !_items.Contains(item)) 
             {
-                return false; //предмет не удалось удалить
+                return false; 
             }
-            _items.Remove(item); //предмет item удаляется из списка _items
+            _items.Remove(item); 
             return true;
         }
 

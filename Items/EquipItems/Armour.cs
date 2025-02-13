@@ -2,8 +2,7 @@
 
 namespace GamePrototype.Items.EquipItems
 {
-    //  Броня - Armour
-    public sealed class Armour : EquipItem //наследуется от EquipItem.
+    public sealed class Armour : EquipItem 
     {
         private uint _defence;
 
@@ -18,15 +17,13 @@ namespace GamePrototype.Items.EquipItems
             get => _defence;
             set
             {
-                _defence = Math.Clamp(value, 5, 50); // Характеристики брони. Название, защита. Защита - % от урона, который
-                //можно заблокировать. По - умолчанию, равно 5.Максимальное значение - 50.
+                _defence = Math.Clamp(value, 5, 50); 
 
             }
         }
 
-        public int Durability { get; set; } // Прочность брони
+        public int Durability { get; set; } 
 
-        public override EquipSlot Slot => EquipSlot.Armour; //определяет, к какому слоту экипировки принадлежит предмет,
-                                                            //описываемый данным классом
+        public override EquipSlot Slot => EquipSlot.Armour; 
     }
 }

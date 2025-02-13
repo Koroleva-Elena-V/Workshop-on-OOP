@@ -7,6 +7,6 @@
         public static string Grindstone = nameof(Grindstone);
         public static string Goblin = nameof(Goblin);
 
-        // передает названия через конструкторы в каждой из вкладок предметов
+       
     }
 }

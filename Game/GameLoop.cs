@@ -7,11 +7,10 @@ namespace GamePrototype.Game
 {
     public sealed class GameLoop
     {
-        private Unit _player; // игрок
-        private DungeonRoom _dungeon;  // подземелье
+        private Unit _player; 
+        private DungeonRoom _dungeon;  
         private readonly CombatManager _combatManager = new CombatManager();
         
-        // запуск игрового процесса
         public void StartGame() 
         {
             Initialize(); 

@@ -5,29 +5,29 @@ namespace GamePrototype.Utils
 {
     public static class DungeonBuilderBase
     {
-        public static DungeonRoom BuildDungeon(Difficulty)  //строит новое подземелье
+        public static DungeonRoom BuildDungeon(Difficulty difficulty)  
         {
-            // создаются комнаты, в нужные добавляется монстр и золото
+            
             var enter = new DungeonRoom("Enter");
-            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy());
+            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy(difficulty));
             var emptyRoom = new DungeonRoom("Empty");
             var lootRoom = new DungeonRoom("Loot1", new Gold());
             var lootStoneRoom = new DungeonRoom("Loot1", new Grindstone("Stone"));
             var finalRoom = new DungeonRoom("Final", new Grindstone("Stone1"));
 
-            // направления
-            enter.TrySetDirection(Direction.Right, monsterRoom); //от входа направо монстр
-            enter.TrySetDirection(Direction.Left, emptyRoom); // налево - пусто
+            
+            enter.TrySetDirection(Direction.Right, monsterRoom); 
+            enter.TrySetDirection(Direction.Left, emptyRoom); 
 
-            monsterRoom.TrySetDirection(Direction.Forward, lootRoom);//от монстра направо бонус
-            monsterRoom.TrySetDirection(Direction.Left, emptyRoom);// налево - пусто
+            monsterRoom.TrySetDirection(Direction.Forward, lootRoom);
+            monsterRoom.TrySetDirection(Direction.Left, emptyRoom);
 
-            emptyRoom.TrySetDirection(Direction.Forward, lootStoneRoom); // комната с камнем
+            emptyRoom.TrySetDirection(Direction.Forward, lootStoneRoom); 
 
-            lootRoom.TrySetDirection(Direction.Forward, finalRoom); // в финальную 
-            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom); // в финальную 
+            lootRoom.TrySetDirection(Direction.Forward, finalRoom); 
+            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom);  
 
-            return enter; // возврат в первую комнату
+            return enter; 
         }
     }
 }

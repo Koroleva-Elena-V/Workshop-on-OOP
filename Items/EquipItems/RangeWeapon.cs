@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-// Оружие дальнего действия
-
 namespace GamePrototype.Items.EquipItems
 {
     public class RangeWeapon : EquipItem
