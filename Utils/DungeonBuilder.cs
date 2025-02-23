@@ -1,34 +1,38 @@
-﻿using GamePrototype.Dungeon;
-using GamePrototype.Items.EconomicItems;
+﻿//УДАЛЕНО, переделано в 2 класса DungeonFactory
 
 
-namespace GamePrototype.Utils
-{
-    public static class DungeonBuilder 
-    {
-        public static DungeonRoom BuildDungeon(Difficulty difficulty)  
-        {
-            
-            var enter = new DungeonRoom("Enter");
-            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy(difficulty));
-            var emptyRoom = new DungeonRoom("Empty");
-            var lootRoom = new DungeonRoom("Loot1", new Gold());
-            var lootStoneRoom = new DungeonRoom("Loot1", new Grindstone("Stone"));
-            var finalRoom = new DungeonRoom("Final", new Grindstone("Stone1"));
+//using GamePrototype.Dungeon;
+//using GamePrototype.Items.EconomicItems;
 
-           
-            enter.TrySetDirection(Direction.Right, monsterRoom); 
-            enter.TrySetDirection(Direction.Left, emptyRoom); 
+////доп.класс, предоставляет методы для создания подземелий.
 
-            monsterRoom.TrySetDirection(Direction.Forward, lootRoom);
-            monsterRoom.TrySetDirection(Direction.Left, emptyRoom);
+//namespace GamePrototype.Utils
+//{
+//    public static class DungeonBuilder
+//    {
+//        public static DungeonRoom BuildDungeon()  //строит новое подземелье
+//        {
+//            // создаются комнаты, в нужные добавляется монстр и золото
+//            var enter = new DungeonRoom("Enter");
+//            var monsterRoom = new DungeonRoom("Monster", UnitFactoryDemo.CreateGoblinEnemy());
+//            var emptyRoom = new DungeonRoom("Empty");
+//            var lootRoom = new DungeonRoom("Loot1", new Gold());
+//            var lootStoneRoom = new DungeonRoom("Loot1", new Grindstone("Stone"));
+//            var finalRoom = new DungeonRoom("Final", new Grindstone("Stone1"));
 
-            emptyRoom.TrySetDirection(Direction.Forward, lootStoneRoom); 
+//            // направления
+//            enter.TrySetDirection(Direction.Right, monsterRoom); //от входа направо монстр
+//            enter.TrySetDirection(Direction.Left, emptyRoom); // налево - пусто
 
-            lootRoom.TrySetDirection(Direction.Forward, finalRoom); 
-            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom); 
+//            monsterRoom.TrySetDirection(Direction.Forward, lootRoom);//от монстра направо бонус
+//            monsterRoom.TrySetDirection(Direction.Left, emptyRoom);// налево - пусто
 
-            return enter; 
-        }
-    }
-}
+//            emptyRoom.TrySetDirection(Direction.Forward, lootStoneRoom); // комната с камнем
+
+//            lootRoom.TrySetDirection(Direction.Forward, finalRoom); // в финальную 
+//            lootStoneRoom.TrySetDirection(Direction.Forward, finalRoom); // в финальную 
+
+//            return enter; // возврат в первую комнату
+//        }
+//    }
+//}

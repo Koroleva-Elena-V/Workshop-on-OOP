@@ -2,28 +2,22 @@
 
 namespace GamePrototype.Items.EquipItems
 {
-    public sealed class Armour : EquipItem 
+    //  Броня - Armour
+    public sealed class Armour : EquipItem //наследуется от EquipItem.
     {
-        private uint _defence;
 
-        public Armour(uint defence, uint durability, string name) : base(durability, name)
+        public Armour(uint defence, //защита
+            uint durability, //прочность
+            string name) : //название
+            base(durability, name) //Вызывает конструктор базового класса EquipItem, передавая ему durability и name.
         {
-            Defence = defence;
-            Durability = (int)durability; 
+            Defence = defence; //Присваивает значение параметра защиты(defence) свойству Defence.
+
         }
+        public uint Defence { get; } // свойство защиты
 
-        public uint Defence
-        {
-            get => _defence;
-            set
-            {
-                _defence = Math.Clamp(value, 5, 50); 
-
-            }
-        }
-
-        public int Durability { get; set; } 
-
-        public override EquipSlot Slot => EquipSlot.Armour; 
+        public override EquipSlot Slot //Переопределяет абстрактное свойство Slot из базового класса EquipItem.
+            => EquipSlot.Armour; //Указывает, что этот предмет брони занимает слот EquipSlot.Armour.
     }
 }
+

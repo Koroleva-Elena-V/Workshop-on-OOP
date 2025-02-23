@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GamePrototype.Utils
+﻿namespace GamePrototype.Utils
 {
+    //готов
     public enum Difficulty
     {
-        Easy,
-        Hard
+        Easy = 0,
+        Hard = 1
     }
 }

@@ -1,20 +1,22 @@
 ﻿using GamePrototype.Units;
 
-// бои
-
 namespace GamePrototype.Combat
 {
     public sealed class CombatManager
     {
-        private readonly Random _random = new();         
-        public Unit StartCombat(Unit player, Unit enemy) => PlayCombatRoutine(player, enemy); 
-               
+        private readonly Random _random = new(); //задаем поле рандома
+
+        public Unit StartCombat(Unit player, Unit enemy) => PlayCombatRoutine(player, enemy);
+        //создаем поле запуска создания персонажей
+
+
+        // как происходит бой
         private Unit PlayCombatRoutine(Unit player, Unit enemy)
         {
-            Console.WriteLine(GetCombatString()); 
-            while (player.Health > 0 && enemy.Health > 0) 
+            Console.WriteLine(GetCombatString()); //получаем инфо о текущем состоянии боя, подробно расписано ниже - GetCombatString
+            while (player.Health > 0 && enemy.Health > 0) // запускается проверка состояния здоровья с условиями
             {
-                if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors)) 
+                if (Enum.TryParse<RockPaperScissors>(Console.ReadLine(), out var rockPaperScissors))
                 {
                     HandleCombatInput(player, enemy, rockPaperScissors);
                 }
@@ -23,11 +25,11 @@ namespace GamePrototype.Combat
                     Console.WriteLine(GetCombatString());
                 }
             }
-            if (player.Health > 0 && enemy.Health == 0) 
+            if (player.Health > 0 && enemy.Health == 0)
             {
                 return player;
             }
-            else if (player.Health == 0 && enemy.Health > 0) 
+            else if (player.Health == 0 && enemy.Health > 0)
             {
                 return enemy;
             }
@@ -35,17 +37,20 @@ namespace GamePrototype.Combat
             return null;
         }
 
+
+        // выводит подробное описание того, что должен сделать игрок
         private string GetCombatString() => $"Type {RockPaperScissors.Rock} = {(int)RockPaperScissors.Rock}" +
             $"or {RockPaperScissors.Paper} = {(int)RockPaperScissors.Paper}" +
             $"or {RockPaperScissors.Scissors} = {(int)RockPaperScissors.Scissors}";
 
 
-        
+
+        // ооочень подробно каждое действие боя
         private void HandleCombatInput(Unit player, Unit enemy, RockPaperScissors rockPaperScissors)
         {
-            var enemyInput = (RockPaperScissors) _random.Next(1, 3); 
+            var enemyInput = (RockPaperScissors)_random.Next(1, 3); //ввод игрока = рандом НПС
             Console.WriteLine($"Result player = {rockPaperScissors} and enemy = {enemyInput}");
-            switch (rockPaperScissors) 
+            switch (rockPaperScissors)
             {
                 // player hit
                 case RockPaperScissors.Rock when enemyInput == RockPaperScissors.Scissors:
@@ -74,13 +79,14 @@ namespace GamePrototype.Combat
         }
 
 
+        //метод вызывающий атакующего и защищающегося
         private void ApplyDamage(Unit attacker, Unit defender)
         {
-            defender.ApplyDamage(attacker.GetUnitDamage()); 
+            defender.ApplyDamage(attacker.GetUnitDamage()); // защищающийся получает урон от нападающего
             Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
-            if (defender.Health == 0) 
+            if (defender.Health == 0)
             {
-                Console.WriteLine($"{defender.Name} is dead!"); 
+                Console.WriteLine($"{defender.Name} is dead!"); // если здоровье =0, то вывод смс о смерти
             }
         }
     }

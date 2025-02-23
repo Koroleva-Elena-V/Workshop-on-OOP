@@ -1,10 +1,4 @@
 ﻿using GamePrototype.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace GamePrototype.Items.EquipItems
 {
@@ -14,10 +8,10 @@ namespace GamePrototype.Items.EquipItems
         public string HelmetName { get; set; }
         public uint Defence
         {
-            get => _defence;
+            get => _defence = 5;
             set
             {
-                _defence = System.Math.Clamp(value, 5, 50);
+                _defence = System.Math.Clamp(value, 0, 50);
             }
         }
         public int Durability { get; set; }
@@ -30,3 +24,4 @@ namespace GamePrototype.Items.EquipItems
         public override EquipSlot Slot => EquipSlot.Helmet;
     }
 }
+
